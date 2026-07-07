@@ -1,18 +1,18 @@
-# redactly
+# scrubvel
 
 > Zero-config, zero-dependency deep redaction of secrets & PII from **any** value — by sensitive **key names** *and* **value patterns**. Circular-safe, immutable, and always JSON-serializable.
 
-[![npm version](https://img.shields.io/npm/v/redactly.svg)](https://www.npmjs.com/package/redactly)
-[![license](https://img.shields.io/npm/l/redactly.svg)](./LICENSE)
-[![types](https://img.shields.io/npm/types/redactly.svg)](https://www.npmjs.com/package/redactly)
+[![npm version](https://img.shields.io/npm/v/scrubvel.svg)](https://www.npmjs.com/package/scrubvel)
+[![license](https://img.shields.io/npm/l/scrubvel.svg)](./LICENSE)
+[![types](https://img.shields.io/npm/types/scrubvel.svg)](https://www.npmjs.com/package/scrubvel)
 [![zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](./package.json)
 
 You already know the story: something logs a whole request object, a user record, or an error, and a password / JWT / API key ends up in your logs, your APM, or Sentry. The usual fix is to hand-maintain a list of paths to scrub (`req.body.password`, `req.headers.authorization`, …). That list is tedious, always out of date, and **misses the secret sitting in a field you never thought about**.
 
-`redactly` takes the opposite approach. Point it at any value and it returns a **redacted deep clone** — removing sensitive data both by **key name** (`password`, `apiKey`, `authorization`, …) *and* by **what the value actually looks like** (a JWT, a Luhn-valid card number, an AWS/GitHub/Stripe key, a PEM private key, a password inside a connection string). No paths to maintain. No config to get started.
+`scrubvel` takes the opposite approach. Point it at any value and it returns a **redacted deep clone** — removing sensitive data both by **key name** (`password`, `apiKey`, `authorization`, …) *and* by **what the value actually looks like** (a JWT, a Luhn-valid card number, an AWS/GitHub/Stripe key, a PEM private key, a password inside a connection string). No paths to maintain. No config to get started.
 
 ```ts
-import { redact } from "redactly";
+import { redact } from "scrubvel";
 
 redact({
   user: "ada",
@@ -30,7 +30,7 @@ redact({
 // }
 ```
 
-## Why redactly
+## Why scrubvel
 
 - **Zero-config** — a sensible, security-first default ruleset works out of the box.
 - **Zero dependencies** — nothing to audit but this package. Tiny and tree-shakeable.
@@ -43,8 +43,8 @@ redact({
 ## Install
 
 ```bash
-npm install redactly
-# or: pnpm add redactly / yarn add redactly / bun add redactly
+npm install scrubvel
+# or: pnpm add scrubvel / yarn add scrubvel / bun add scrubvel
 ```
 
 Requires Node.js 18+ (works in any modern runtime; no Node built-ins used).
@@ -54,7 +54,7 @@ Requires Node.js 18+ (works in any modern runtime; no Node built-ins used).
 ### One-off
 
 ```ts
-import { redact } from "redactly";
+import { redact } from "scrubvel";
 
 logger.info(redact(requestBody));
 ```
@@ -64,7 +64,7 @@ logger.info(redact(requestBody));
 `createRedactor` resolves options once and returns a fast, reusable function.
 
 ```ts
-import { createRedactor } from "redactly";
+import { createRedactor } from "scrubvel";
 
 const scrub = createRedactor({ keepLast: 4 });
 
@@ -91,7 +91,7 @@ The full list is exported as `defaultSensitiveKeys`.
 ### By value pattern (default)
 
 These are detected **wherever they appear**, even under a harmless key — the high-value
-part of redactly. They're chosen to be high-severity and low-false-positive:
+part of scrubvel. They're chosen to be high-severity and low-false-positive:
 
 | Detector | Matches |
 | --- | --- |
@@ -113,7 +113,7 @@ PII detectors are **off by default** (many apps legitimately log their own email
 addresses or IPs). Enable the ones you want:
 
 ```ts
-import { redact, detectors } from "redactly";
+import { redact, detectors } from "scrubvel";
 
 redact(data, { patterns: [detectors.email, detectors.ipv4, detectors.ipv6, detectors.usPhone] });
 ```
@@ -167,13 +167,13 @@ redact(data, {
 
 ## Recipes
 
-`redactly` is just a function, so it slots into whatever you already use.
+`scrubvel` is just a function, so it slots into whatever you already use.
 
 **Pino** — redact every log line automatically:
 
 ```ts
 import pino from "pino";
-import { createRedactor } from "redactly";
+import { createRedactor } from "scrubvel";
 
 const scrub = createRedactor();
 const logger = pino({ formatters: { log: (o) => scrub(o) } });
@@ -183,7 +183,7 @@ const logger = pino({ formatters: { log: (o) => scrub(o) } });
 
 ```ts
 import * as Sentry from "@sentry/node";
-import { createRedactor } from "redactly";
+import { createRedactor } from "scrubvel";
 
 const scrub = createRedactor();
 Sentry.init({ beforeSend: (event) => scrub(event) });
@@ -193,7 +193,7 @@ Sentry.init({ beforeSend: (event) => scrub(event) });
 
 ```ts
 import { format } from "winston";
-import { createRedactor } from "redactly";
+import { createRedactor } from "scrubvel";
 
 const scrub = createRedactor();
 const redactFormat = format((info) => scrub(info));
