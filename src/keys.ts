@@ -35,7 +35,7 @@ const SUBSTRING_KEYS: readonly string[] = [
 
 /**
  * Keys matched only on *exact* normalised equality. These tokens (e.g. `auth`,
- * `key`, `pin`) would cause too many false positives as substrings — `auth`
+ * `key`, `pin`) would cause too many false positives as substrings - `auth`
  * would flag `author`, `key` would flag `monkey` or `foreignKey`.
  */
 const EXACT_KEYS: readonly string[] = [
@@ -112,7 +112,7 @@ export function createKeyMatcher(
       }
       const normalized = normalizeKey(key);
       if (!normalized) return false;
-      // Equality check first — this is the whole of "exact" mode and also lets
+      // Equality check first - this is the whole of "exact" mode and also lets
       // "smart" mode match substring tokens that happen to equal the key.
       if (exact.has(normalized) || substrings.has(normalized)) return true;
       if (strategy === "exact") return false;

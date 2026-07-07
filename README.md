@@ -1,18 +1,18 @@
-# scrubvel
+# veilit
 
-> Zero-config, zero-dependency deep redaction of secrets & PII from **any** value — by sensitive **key names** *and* **value patterns**. Circular-safe, immutable, and always JSON-serializable.
+> Zero-config, zero-dependency deep redaction of secrets & PII from **any** value - by sensitive **key names** *and* **value patterns**. Circular-safe, immutable, and always JSON-serializable.
 
-[![npm version](https://img.shields.io/npm/v/scrubvel.svg)](https://www.npmjs.com/package/scrubvel)
-[![license](https://img.shields.io/npm/l/scrubvel.svg)](./LICENSE)
-[![types](https://img.shields.io/npm/types/scrubvel.svg)](https://www.npmjs.com/package/scrubvel)
+[![npm version](https://img.shields.io/npm/v/veilit.svg)](https://www.npmjs.com/package/veilit)
+[![license](https://img.shields.io/npm/l/veilit.svg)](./LICENSE)
+[![types](https://img.shields.io/npm/types/veilit.svg)](https://www.npmjs.com/package/veilit)
 [![zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](./package.json)
 
 You already know the story: something logs a whole request object, a user record, or an error, and a password / JWT / API key ends up in your logs, your APM, or Sentry. The usual fix is to hand-maintain a list of paths to scrub (`req.body.password`, `req.headers.authorization`, …). That list is tedious, always out of date, and **misses the secret sitting in a field you never thought about**.
 
-`scrubvel` takes the opposite approach. Point it at any value and it returns a **redacted deep clone** — removing sensitive data both by **key name** (`password`, `apiKey`, `authorization`, …) *and* by **what the value actually looks like** (a JWT, a Luhn-valid card number, an AWS/GitHub/Stripe key, a PEM private key, a password inside a connection string). No paths to maintain. No config to get started.
+`veilit` takes the opposite approach. Point it at any value and it returns a **redacted deep clone** - removing sensitive data both by **key name** (`password`, `apiKey`, `authorization`, …) *and* by **what the value actually looks like** (a JWT, a Luhn-valid card number, an AWS/GitHub/Stripe key, a PEM private key, a password inside a connection string). No paths to maintain. No config to get started.
 
 ```ts
-import { redact } from "scrubvel";
+import { redact } from "veilit";
 
 redact({
   user: "ada",
@@ -30,21 +30,21 @@ redact({
 // }
 ```
 
-## Why scrubvel
+## Why veilit
 
-- **Zero-config** — a sensible, security-first default ruleset works out of the box.
-- **Zero dependencies** — nothing to audit but this package. Tiny and tree-shakeable.
-- **Detects secrets by value, not just by key** — the part most redactors skip. A JWT in a field called `note` still gets caught.
-- **Deep & total** — objects, arrays, `Map`, `Set`, `Error` (including `cause`), `Date`, `RegExp`, `URL`, class instances, nested to any depth.
-- **Safe by construction** — never mutates your input, handles circular references, throwing getters, and is hardened against prototype pollution. Output is acyclic and safe to `JSON.stringify`.
-- **Framework-agnostic** — it's just a function. Drop it into Pino, Winston, `console`, Sentry's `beforeSend`, an Express error handler, or a response serializer.
-- **TypeScript-first** — fully typed, ESM + CJS, generics preserve your value's type.
+- **Zero-config** - a sensible, security-first default ruleset works out of the box.
+- **Zero dependencies** - nothing to audit but this package. Tiny and tree-shakeable.
+- **Detects secrets by value, not just by key** - the part most redactors skip. A JWT in a field called `note` still gets caught.
+- **Deep & total** - objects, arrays, `Map`, `Set`, `Error` (including `cause`), `Date`, `RegExp`, `URL`, class instances, nested to any depth.
+- **Safe by construction** - never mutates your input, handles circular references, throwing getters, and is hardened against prototype pollution. Output is acyclic and safe to `JSON.stringify`.
+- **Framework-agnostic** - it's just a function. Drop it into Pino, Winston, `console`, Sentry's `beforeSend`, an Express error handler, or a response serializer.
+- **TypeScript-first** - fully typed, ESM + CJS, generics preserve your value's type.
 
 ## Install
 
 ```bash
-npm install scrubvel
-# or: pnpm add scrubvel / yarn add scrubvel / bun add scrubvel
+npm install veilit
+# or: pnpm add veilit / yarn add veilit / bun add veilit
 ```
 
 Requires Node.js 18+ (works in any modern runtime; no Node built-ins used).
@@ -54,7 +54,7 @@ Requires Node.js 18+ (works in any modern runtime; no Node built-ins used).
 ### One-off
 
 ```ts
-import { redact } from "scrubvel";
+import { redact } from "veilit";
 
 logger.info(redact(requestBody));
 ```
@@ -64,7 +64,7 @@ logger.info(redact(requestBody));
 `createRedactor` resolves options once and returns a fast, reusable function.
 
 ```ts
-import { createRedactor } from "scrubvel";
+import { createRedactor } from "veilit";
 
 const scrub = createRedactor({ keepLast: 4 });
 
@@ -90,8 +90,8 @@ The full list is exported as `defaultSensitiveKeys`.
 
 ### By value pattern (default)
 
-These are detected **wherever they appear**, even under a harmless key — the high-value
-part of scrubvel. They're chosen to be high-severity and low-false-positive:
+These are detected **wherever they appear**, even under a harmless key - the high-value
+part of veilit. They're chosen to be high-severity and low-false-positive:
 
 | Detector | Matches |
 | --- | --- |
@@ -113,7 +113,7 @@ PII detectors are **off by default** (many apps legitimately log their own email
 addresses or IPs). Enable the ones you want:
 
 ```ts
-import { redact, detectors } from "scrubvel";
+import { redact, detectors } from "veilit";
 
 redact(data, { patterns: [detectors.email, detectors.ipv4, detectors.ipv6, detectors.usPhone] });
 ```
@@ -149,7 +149,7 @@ redact(data, {
 
 ### Custom detectors
 
-Add your own value patterns — a bare `RegExp` (the global flag is added for you)
+Add your own value patterns - a bare `RegExp` (the global flag is added for you)
 or a full `ValueDetector` with optional validation and partial (capture-group) replacement:
 
 ```ts
@@ -167,39 +167,39 @@ redact(data, {
 
 ## Recipes
 
-`scrubvel` is just a function, so it slots into whatever you already use.
+`veilit` is just a function, so it slots into whatever you already use.
 
-**Pino** — redact every log line automatically:
+**Pino** - redact every log line automatically:
 
 ```ts
 import pino from "pino";
-import { createRedactor } from "scrubvel";
+import { createRedactor } from "veilit";
 
 const scrub = createRedactor();
 const logger = pino({ formatters: { log: (o) => scrub(o) } });
 ```
 
-**Sentry** — scrub events before they leave the process:
+**Sentry** - scrub events before they leave the process:
 
 ```ts
 import * as Sentry from "@sentry/node";
-import { createRedactor } from "scrubvel";
+import { createRedactor } from "veilit";
 
 const scrub = createRedactor();
 Sentry.init({ beforeSend: (event) => scrub(event) });
 ```
 
-**Winston** — as a custom format:
+**Winston** - as a custom format:
 
 ```ts
 import { format } from "winston";
-import { createRedactor } from "scrubvel";
+import { createRedactor } from "veilit";
 
 const scrub = createRedactor();
 const redactFormat = format((info) => scrub(info));
 ```
 
-**Express / Fastify** — scrub what you log in an error handler:
+**Express / Fastify** - scrub what you log in an error handler:
 
 ```ts
 app.use((err, req, res, next) => {
@@ -214,7 +214,7 @@ app.use((err, req, res, next) => {
 - **JSON-safe output.** Circular references become `"[CIRCULAR]"`, so the result is always serializable.
 - **Structural clone.** Plain objects, arrays, `Map`, `Set`, `Date`, `RegExp` and `Error` are reconstructed; class instances become plain objects (what you want for logging). `Error`s become `{ name, message, stack, …ownProps, cause }` with everything scrubbed.
 - **Binary is passed through.** `Buffer` / typed arrays are returned as-is (never expanded).
-- **Not a substitute for not collecting secrets.** Redaction is a safety net. Detection is heuristic — value patterns can miss novel formats and can, rarely, over-redact. Treat it as defense-in-depth, and add domain-specific `keys`/`patterns` for your own secrets.
+- **Not a substitute for not collecting secrets.** Redaction is a safety net. Detection is heuristic - value patterns can miss novel formats and can, rarely, over-redact. Treat it as defense-in-depth, and add domain-specific `keys`/`patterns` for your own secrets.
 
 ## API
 

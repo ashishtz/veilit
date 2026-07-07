@@ -110,13 +110,13 @@ function walk(
 
   const obj = value as object;
 
-  // Leaf object types — cloned or stringified, never recursed into.
+  // Leaf object types - cloned or stringified, never recursed into.
   if (obj instanceof Date) return new Date(obj.getTime());
   if (obj instanceof RegExp) return new RegExp(obj.source, obj.flags);
   if (typeof URL !== "undefined" && obj instanceof URL) {
     return redactString(obj.toString(), config, path);
   }
-  if (ArrayBuffer.isView(obj) || obj instanceof ArrayBuffer) return obj; // binary — pass through
+  if (ArrayBuffer.isView(obj) || obj instanceof ArrayBuffer) return obj; // binary - pass through
 
   if (depth > config.maxDepth) return config.truncated;
   if (ancestors.has(obj)) return config.circular;

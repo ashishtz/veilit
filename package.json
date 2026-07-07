@@ -1,7 +1,7 @@
 {
-  "name": "scrubvel",
+  "name": "veilit",
   "version": "0.1.0",
-  "description": "Zero-config, zero-dependency deep redaction of secrets & PII from any value — by sensitive key names AND value patterns (JWTs, credit cards, AWS/GitHub/Stripe keys, private keys, URL passwords). Circular-safe, immutable, always JSON-serializable output.",
+  "description": "Zero-config, zero-dependency deep redaction of secrets & PII from any value - by sensitive key names AND value patterns (JWTs, credit cards, AWS/GitHub/Stripe keys, private keys, URL passwords). Circular-safe, immutable, always JSON-serializable output.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

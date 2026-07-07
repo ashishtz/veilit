@@ -5,8 +5,8 @@
 export interface RedactionContext {
   /**
    * Why this value was redacted:
-   * - `"key"` — the property key looked sensitive (e.g. `password`, `apiKey`).
-   * - `"value"` — the value itself matched a detector (e.g. a JWT or card number).
+   * - `"key"` - the property key looked sensitive (e.g. `password`, `apiKey`).
+   * - `"value"` - the value itself matched a detector (e.g. a JWT or card number).
    */
   reason: "key" | "value";
   /** The property key (or `Map` string key) the value was found under, if any. */
@@ -41,7 +41,7 @@ export interface ValueDetector {
   validate?: (match: string) => boolean;
   /**
    * When set, only this regex capture group is redacted rather than the whole
-   * match — used to strip the password out of a connection string while
+   * match - used to strip the password out of a connection string while
    * keeping the scheme, user and host readable.
    */
   group?: number;

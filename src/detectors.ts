@@ -33,7 +33,7 @@ const creditCard: ValueDetector = {
   validate: (match) => luhnValid(match.replace(/[ -]/g, "")),
 };
 
-/** US Social Security Numbers — dashes required to keep false positives low. */
+/** US Social Security Numbers - dashes required to keep false positives low. */
 const ssn: ValueDetector = {
   name: "ssn",
   pattern: /\b\d{3}-\d{2}-\d{4}\b/g,
@@ -89,7 +89,7 @@ const urlPassword: ValueDetector = {
   group: 1,
 };
 
-/** Email addresses (opt-in — many apps legitimately log their own addresses). */
+/** Email addresses (opt-in - many apps legitimately log their own addresses). */
 const email: ValueDetector = {
   name: "email",
   pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g,
@@ -104,7 +104,7 @@ const ipv4: ValueDetector = {
 /**
  * IPv6 addresses, including `::`-compressed forms (opt-in). Alternatives are
  * ordered so that the "mixed" forms (which fail cleanly rather than match a
- * prefix) are tried before the shorter "ends-with-::" forms — JS alternation
+ * prefix) are tried before the shorter "ends-with-::" forms - JS alternation
  * returns the first matching branch, not the longest.
  */
 const ipv6: ValueDetector = {
@@ -113,7 +113,7 @@ const ipv6: ValueDetector = {
     /(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}|(?:[A-F0-9]{1,4}:){1,2}(?::[A-F0-9]{1,4}){1,5}|(?:[A-F0-9]{1,4}:){1,3}(?::[A-F0-9]{1,4}){1,4}|(?:[A-F0-9]{1,4}:){1,4}(?::[A-F0-9]{1,4}){1,3}|(?:[A-F0-9]{1,4}:){1,5}(?::[A-F0-9]{1,4}){1,2}|(?:[A-F0-9]{1,4}:){1,6}:[A-F0-9]{1,4}|[A-F0-9]{1,4}:(?::[A-F0-9]{1,4}){1,6}|(?:[A-F0-9]{1,4}:){1,7}:|:(?::[A-F0-9]{1,4}){1,7}|::/gi,
 };
 
-/** North-American style phone numbers (opt-in — high false-positive risk). */
+/** North-American style phone numbers (opt-in - high false-positive risk). */
 const usPhone: ValueDetector = {
   name: "usPhone",
   pattern: /\b(?:\+?1[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}\b/g,
