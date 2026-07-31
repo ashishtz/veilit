@@ -1,0 +1,75 @@
+{
+  "name": "veilit",
+  "version": "0.1.0",
+  "description": "Zero-config, zero-dependency deep redaction of secrets & PII from any value - by sensitive key names AND value patterns (JWTs, credit cards, AWS/GitHub/Stripe keys, private keys, URL passwords). Circular-safe, immutable, always JSON-serializable output.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "redact",
+    "redaction",
+    "pii",
+    "secrets",
+    "sanitize",
+    "sensitive-data",
+    "logging",
+    "logger",
+    "security",
+    "mask",
+    "obfuscate",
+    "gdpr",
+    "credentials",
+    "password",
+    "token",
+    "jwt",
+    "scrub",
+    "typescript",
+    "zero-dependency"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashishtz/open-space.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ashishtz/open-space/issues"
+  },
+  "homepage": "https://github.com/ashishtz/open-space#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.2",
+    "@types/node": "26.1.0",
+    "@vitest/coverage-v8": "4.1.9",
+    "tsup": "8.5.1",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}
