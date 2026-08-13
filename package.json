@@ -1,6 +1,6 @@
 {
   "name": "veilit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zero-config, zero-dependency deep redaction of secrets & PII from any value - by sensitive key names AND value patterns (JWTs, credit cards, AWS/GitHub/Stripe keys, private keys, URL passwords). Circular-safe, immutable, always JSON-serializable output.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -51,7 +51,7 @@
     "typescript",
     "zero-dependency"
   ],
-  "author": "",
+  "author": "ashishtz <ashishpatel6958@gmail.com> (https://github.com/ashishtz)",
   "license": "MIT",
   "repository": {
     "type": "git",
