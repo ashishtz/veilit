@@ -47,7 +47,7 @@ npm install veilit
 # or: pnpm add veilit / yarn add veilit / bun add veilit
 ```
 
-Requires Node.js 18+ (works in any modern runtime; no Node built-ins used).
+Requires Node.js 20+ (works in any modern runtime; no Node built-ins used).
 
 ## Usage
 
